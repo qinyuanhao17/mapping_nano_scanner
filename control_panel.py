@@ -1,10 +1,7 @@
 import sys
 import os
 import time
-import platform
-import struct
-import socket
-import pyvisa
+import pythoncom
 import nidaqmx
 import scanner_ui
 import pandas as pd
@@ -82,6 +79,102 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
         self.y_minus_btn.clicked.connect(self.y_minus)
         self.x_plus_btn.clicked.connect(self.x_plus)
         self.x_minus_btn.clicked.connect(self.x_minus)
+        self.mapping_frame_calc_btn.clicked.connect(self.calc_frames)
+        self.mapping_start_btn.clicked.connect(self.mapping_thread)
+        self.mapping_interrupt_btn.clicked.connect(self.interrupt_mapping)
+        self.mapping_return_btn.clicked.connect(self.return_mapping_origin)
+    def mapping_thread(self):
+        thread = Thread(
+            target=self.mapping_start
+        )
+        thread.start()
+    def mapping_start(self):
+        pythoncom.CoInitialize()
+        start_x = float(self.start_voltage_x.value())/20
+        start_y = float(self.start_voltage_y.value())/20
+        stop_x = float(self.stop_voltage_x.value())/20
+        stop_y = float(self.stop_voltage_y.value())/20
+        step_x = float(self.mapping_step_voltage_x.value())/20
+        step_y = float(self.mapping_step_voltage_y.value())/20
+        intTime = int(self.intTime_spbx.value())
+        tot_frame = int(self.frame_spbx.value())
+        x_list = np.arange(start_x, stop_x+step_x, step_x)
+        y_list = np.arange(start_y, stop_y+step_y, step_y)
+        y_list_check_index = list(y_list)
+        self.__stopConstant == False
+        with nidaqmx.Task() as read_task, nidaqmx.Task() as write_task:
+    
+            di = read_task.di_channels.add_di_chan("Dev1/port0/line1")
+            do = write_task.do_channels.add_do_chan("Dev1/port0/line0")  
+            
+            for i in y_list:
+                self.y_task.write(i)
+                self.y_voltage.setValue(i*20)
+                if y_list_check_index.index(i) % 2 == 0:
+                    for j in x_list:
+                        self.x_task.write(j)
+                        self.x_voltage.setValue(i*20)
+                        time.sleep(0.5)
+                        while True:
+                            data = read_task.read()
+                            if data == False:
+                                break                          
+                        write_task.write(True)
+                        time.sleep(0.01)
+                        write_task.write(False)
+                        time.sleep(intTime+1)
+                elif y_list_check_index.index(i) % 2 != 0:
+                    for j in x_list[::-1]:
+                        self.x_task.write(j)
+                        self.x_voltage.setValue(i*20)
+                        time.sleep(0.5)
+                        while True:
+                            data = read_task.read()
+                            if data == False:
+                                break                          
+                        write_task.write(True)
+                        time.sleep(0.01)
+                        write_task.write(False)
+                        time.sleep(intTime+1)
+                if self.__stopConstant == True:
+                    break
+        pythoncom.CoUninitialize()
+    def interrupt_mapping(self):
+        self.__stopConstant == True
+    def return_mapping_origin(self):
+        start_x = float(self.start_voltage_x.value())/20
+        start_y = float(self.start_voltage_y.value())/20
+        while True:
+            x_pos = float(self.x_voltage.value())/20
+            step_x = float(self.mapping_step_voltage_x.value())/20
+            current_position = x_pos - step_x
+            self.x_task.write(current_position)
+            self.x_voltage.setValue(current_position*20)
+            if current_position - start_x <= 1/20:
+                self.x_task.write(start_x)
+                self.x_voltage.setValue(start_x*20)
+                break
+        while True:
+            y_pos = float(self.y_voltage.value())/20
+            step_y = float(self.mapping_step_voltage_y.value())/20
+            current_position = y_pos - step_y
+            self.y_task.write(current_position)
+            self.y_voltage.setValue(current_position*20)
+            if current_position - start_y <= 1/20:
+                self.y_task.write(start_y)
+                self.y_voltage.setValue(start_y*20)
+                break
+
+    def calc_frames(self):
+        start_x = float(self.start_voltage_x.value())/20
+        start_y = float(self.start_voltage_y.value())/20
+        stop_x = float(self.stop_voltage_x.value())/20
+        stop_y = float(self.stop_voltage_y.value())/20
+        step_x = float(self.mapping_step_voltage_x.value())/20
+        step_y = float(self.mapping_step_voltage_x.value())/20
+        if (stop_x - start_x) % step_x == 0 and (stop_y -start_y) % step_y == 0:
+            frames = ((stop_x - start_x)/step_x + 1) * ((stop_y -start_y)/step_y +1)
+            self.frame_spbx.setValue(frames)
     def y_plus(self):
         y_position = float(self.y_voltage.value())/20
         step = float(self.step_voltage_spbx.value())/20
@@ -170,8 +263,26 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
         self.m_flag = False
         self.setCursor(QCursor(Qt.ArrowCursor))
     def closeEvent(self, event):
-        self.x_task.write(0.0)
-        self.y_task.write(0.0)
+        while True:
+            x_pos = float(self.x_voltage.value())/20
+            
+            current_position = x_pos - 10/20
+            self.x_task.write(current_position)
+            self.x_voltage.setValue(current_position*20)
+            if current_position <= 10/20:
+                self.x_task.write(0)
+                self.x_voltage.setValue(0)
+                break
+        while True:
+            y_pos = float(self.y_voltage.value())/20
+            
+            current_position = y_pos - 10/20
+            self.y_task.write(current_position)
+            self.y_voltage.setValue(current_position*20)
+            if current_position <= 1/20:
+                self.y_task.write(0)
+                self.y_voltage.setValue(0)
+                break
         self.x_task.close()
         self.y_task.close()
     

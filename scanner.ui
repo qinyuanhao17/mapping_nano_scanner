@@ -347,7 +347,7 @@ QPushButton:pressed {
            <widget class="QGroupBox" name="groupBox_2">
             <property name="geometry">
              <rect>
-              <x>480</x>
+              <x>500</x>
               <y>0</y>
               <width>761</width>
               <height>651</height>
@@ -652,7 +652,7 @@ QPushButton:pressed {
                      <x>0</x>
                      <y>0</y>
                      <width>723</width>
-                     <height>69</height>
+                     <height>73</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_24">
@@ -677,8 +677,8 @@ QPushButton:pressed {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>481</width>
-              <height>561</height>
+              <width>491</width>
+              <height>591</height>
              </rect>
             </property>
             <property name="title">
@@ -999,28 +999,35 @@ QPushButton:pressed {
                  <layout class="QVBoxLayout" name="verticalLayout_17">
                   <item>
                    <layout class="QGridLayout" name="gridLayout_7">
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_23">
+                    <item row="0" column="3">
+                     <widget class="QLabel" name="label_25">
                       <property name="text">
-                       <string>Start:</string>
+                       <string>StopX:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="2">
-                     <widget class="QLabel" name="rotator_a_frames_spbx_5">
+                    <item row="1" column="3">
+                     <widget class="QLabel" name="label_26">
                       <property name="text">
-                       <string>Step:</string>
+                       <string>StopY:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="7">
+                     <widget class="QLabel" name="rotator_a_frames_spbx">
+                      <property name="text">
+                       <string>StepX:</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0">
-                     <widget class="QLabel" name="label_25">
+                     <widget class="QLabel" name="label_24">
                       <property name="text">
-                       <string>Stop:</string>
+                       <string>StartY:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="2">
+                    <item row="1" column="9">
                      <widget class="QLabel" name="rotator_a_frames_spbx_6">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1033,14 +1040,132 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="3">
+                    <item row="0" column="5">
+                     <widget class="QDoubleSpinBox" name="stop_voltage_x">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QDoubleSpinBox" name="start_voltage_y">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="8">
+                     <widget class="QDoubleSpinBox" name="mapping_step_voltage_y">
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="8">
+                     <widget class="QDoubleSpinBox" name="mapping_step_voltage_x">
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="10">
+                     <widget class="QSpinBox" name="intTime_spbx">
+                      <property name="maximum">
+                       <number>1000000000</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_23">
+                      <property name="text">
+                       <string>StartX:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="start_voltage_x">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="9">
+                     <widget class="QLabel" name="rotator_a_frames_spbx_7">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="text">
+                       <string>intTime:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="5">
+                     <widget class="QDoubleSpinBox" name="stop_voltage_y">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximum">
+                       <double>120.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="7">
+                     <widget class="QLabel" name="rotator_a_frames_spbx_2">
+                      <property name="text">
+                       <string>StepY:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="10">
                      <widget class="QSpinBox" name="frame_spbx">
                       <property name="maximum">
                        <number>1000000000</number>
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="4">
+                    <item row="2" column="9" colspan="2">
                      <widget class="QPushButton" name="mapping_frame_calc_btn">
                       <property name="text">
                        <string>CALC</string>
@@ -1057,36 +1182,6 @@ QPushButton:pressed {
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
-                     <widget class="QDoubleSpinBox" name="start_voltage">
-                      <property name="maximum">
-                       <double>120.000000000000000</double>
-                      </property>
-                      <property name="singleStep">
-                       <double>0.010000000000000</double>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QDoubleSpinBox" name="stop_voltage">
-                      <property name="maximum">
-                       <double>120.000000000000000</double>
-                      </property>
-                      <property name="singleStep">
-                       <double>0.010000000000000</double>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="3">
-                     <widget class="QDoubleSpinBox" name="mapping_step_voltage">
-                      <property name="maximum">
-                       <double>120.000000000000000</double>
-                      </property>
-                      <property name="singleStep">
-                       <double>0.010000000000000</double>
-                      </property>
-                     </widget>
-                    </item>
                    </layout>
                   </item>
                   <item>
@@ -1097,7 +1192,7 @@ QPushButton:pressed {
                    </widget>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="1,1,1,1">
+                   <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="1,1,1">
                     <item>
                      <widget class="QPushButton" name="mapping_start_btn">
                       <property name="text">
@@ -1146,29 +1241,6 @@ QPushButton:pressed {
                       <property name="icon">
                        <iconset resource="resources.qrc">
                         <normaloff>:/my_icons/images/icons/return.svg</normaloff>:/my_icons/images/icons/return.svg</iconset>
-                      </property>
-                      <property name="iconSize">
-                       <size>
-                        <width>20</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="mapping_continue_btn">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="text">
-                       <string>Continue</string>
-                      </property>
-                      <property name="icon">
-                       <iconset resource="resources.qrc">
-                        <normaloff>:/my_icons/images/icons/stop.svg</normaloff>:/my_icons/images/icons/stop.svg</iconset>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -1243,8 +1315,8 @@ QProgressBar::chunk {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>441</width>
-                       <height>69</height>
+                       <width>451</width>
+                       <height>73</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1282,8 +1354,4 @@ QProgressBar::chunk {
   <include location="../my_scripts/resources.qrc"/>
  </resources>
  <connections/>
- <buttongroups>
-  <buttongroup name="stp_mode_ck_group"/>
-  <buttongroup name="file_ck_group"/>
- </buttongroups>
 </ui>

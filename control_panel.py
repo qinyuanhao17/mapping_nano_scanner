@@ -147,7 +147,9 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
                         progress+=1
                         self.progress_bar_info.emit(progress/tot_frame*100)
                 if self.__stopConstant == True:
+                    self.scanner_info_msg.emit('Mapping interrupted.')
                     break
+            self.scanner_info_msg.emit('Mapping finished.')
         pythoncom.CoUninitialize()
     def interrupt_mapping(self):
         self.__stopConstant == True

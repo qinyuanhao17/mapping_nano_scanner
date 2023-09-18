@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QGraphicsDropShadowEffect, QF
 
 class MyWindow(scanner_ui.Ui_Form, QWidget):
     scanner_info_msg = pyqtSignal(str)
+    progress_bar_info = pyqtSignal(float)
     def __init__(self):
 
         super().__init__()
@@ -83,6 +84,10 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
         self.mapping_start_btn.clicked.connect(self.mapping_thread)
         self.mapping_interrupt_btn.clicked.connect(self.interrupt_mapping)
         self.mapping_return_btn.clicked.connect(self.return_mapping_origin)
+
+        self.progress_bar_info.connect(self.progress_bar_thread)
+    def progress_bar_thread(self,msg):
+        self.mapping_progressbar.setValue(int(msg))
     def mapping_thread(self):
         thread = Thread(
             target=self.mapping_start
@@ -102,6 +107,7 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
         y_list = np.arange(start_y, stop_y+step_y, step_y)
         y_list_check_index = list(y_list)
         self.__stopConstant == False
+        progress = 0
         with nidaqmx.Task() as read_task, nidaqmx.Task() as write_task:
     
             di = read_task.di_channels.add_di_chan("Dev1/port0/line1")
@@ -123,6 +129,8 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
                         time.sleep(0.01)
                         write_task.write(False)
                         time.sleep(intTime+1)
+                        progress+=1
+                        self.progress_bar_info.emit(progress/tot_frame*100)
                 elif y_list_check_index.index(i) % 2 != 0:
                     for j in x_list[::-1]:
                         self.x_task.write(j)
@@ -136,6 +144,8 @@ class MyWindow(scanner_ui.Ui_Form, QWidget):
                         time.sleep(0.01)
                         write_task.write(False)
                         time.sleep(intTime+1)
+                        progress+=1
+                        self.progress_bar_info.emit(progress/tot_frame*100)
                 if self.__stopConstant == True:
                     break
         pythoncom.CoUninitialize()
